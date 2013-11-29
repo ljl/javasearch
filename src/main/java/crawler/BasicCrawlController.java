@@ -1,30 +1,22 @@
+package crawler;
+
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import search.MySearch;
 
-/**
- * @author Yasser Ganjisaffar <lastname at gmail dot com>
- */
+
 public class BasicCrawlController
 {
-    private static Search search;
+    private static MySearch search;
 
-    public static void main( String[] args )
+    public static void startCrawl( String seed, int crawlers  )
         throws Exception
     {
-        if ( args.length != 2 )
-        {
-            System.out.println( "Needed parameters: " );
-            System.out.println( "\t rootFolder (it will contain intermediate crawl data)" );
-            System.out.println( "\t numberOfCralwers (number of concurrent threads)" );
-            return;
-        }
 
-        String crawlStorageFolder = args[0];
-
-        int numberOfCrawlers = 10;
+        String crawlStorageFolder = "/Users/ljl/workspace/javasearch/src/main/resources";
 
         CrawlConfig config = new CrawlConfig();
 
@@ -43,13 +35,13 @@ public class BasicCrawlController
         RobotstxtServer robotstxtServer = new RobotstxtServer( robotstxtConfig, pageFetcher );
         CrawlController controller = new CrawlController( config, pageFetcher, robotstxtServer );
 
-        controller.addSeed( "http://aftenposten.no/" );
-        controller.start( BasicCrawler.class, numberOfCrawlers );
+        controller.addSeed( seed );
+        controller.start( BasicCrawler.class, crawlers);
     }
 
-    public static Search getSearch() {
+    public static MySearch getSearch() {
         if (search == null) {
-            search = new Search();
+            search = new MySearch();
         }
         return search;
     }

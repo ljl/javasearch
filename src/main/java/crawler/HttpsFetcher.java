@@ -1,3 +1,5 @@
+package crawler;
+
 import org.apache.http.conn.scheme.Scheme;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
