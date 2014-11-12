@@ -1,8 +1,5 @@
 package service;
 
-import model.JsonResponse;
-import org.elasticsearch.action.get.GetResponse;
-import org.elasticsearch.action.search.SearchResponse;
 import search.MySearch;
 
 import javax.ws.rs.GET;
@@ -18,10 +15,22 @@ public class SearchService {
 
     @GET
     @Path("{q}")
-    public SearchResponse doSearch(@PathParam("q")String query) {
+    public String doSearch(@PathParam("q")String query) {
         MySearch search = new MySearch();
         try {
             return search.search(query);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @GET
+    @Path("default")
+    public String defaultSearch() {
+        MySearch search = new MySearch();
+        try {
+            return search.defaultSearch();
         } catch (Exception e) {
             e.printStackTrace();
         }

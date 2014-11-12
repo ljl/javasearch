@@ -1,0 +1,11 @@
+- Clean up the mess
+- WebSocket for updating of indexprogress
+- Monitor indexing
+- Unit tests
+- Split project to different modules
+- Implement ThreadRunner
+- Max thread cap
+- Different index per page
+- JS in files
+- AngularJS
+- Thymeleaf templates

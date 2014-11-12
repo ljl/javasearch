@@ -1,0 +1,20 @@
+<div class="jumbotron">
+    <h1>Hello, search!</h1>
+
+    <form role="form">
+        <div class="form-group">
+            <label for="s">Search</label>
+            <input type="text" class="form-control" id="s" ng-change="search()" ng-model="query" placeholder="Search for stuff">
+        </div>
+    </form>
+    <div id="stats">
+    <span ng-if="total">{{total}} hits</span>
+    <span ng-if="time">{{time}}ms</span>
+    </div>
+</div>
+<div id="results">
+    <div ng-repeat="hit in hits">
+        <h3>{{hit._source.title}}</h3>
+        <a>{{hit._source.url}}</a>
+    </div>
+</div>

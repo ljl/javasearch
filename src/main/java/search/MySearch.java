@@ -1,24 +1,18 @@
 package search;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
-
-import io.searchbox.client.JestClient;
-import io.searchbox.client.JestClientFactory;
-import io.searchbox.client.JestResult;
-import io.searchbox.client.config.ClientConfig;
-import io.searchbox.core.Index;
-import io.searchbox.core.Search;
-import org.elasticsearch.action.get.GetResponse;
+import org.elasticsearch.action.admin.indices.refresh.RefreshResponse;
 import org.elasticsearch.action.index.IndexRequestBuilder;
 import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.Client;
+import org.elasticsearch.common.xcontent.StatusToXContent;
+import org.elasticsearch.common.xcontent.ToXContent;
 import org.elasticsearch.common.xcontent.XContentBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.elasticsearch.search.builder.SearchSourceBuilder;
+
+import java.io.IOException;
+import java.util.Map;
 
 import static org.elasticsearch.common.xcontent.XContentFactory.jsonBuilder;
 
@@ -61,18 +55,40 @@ public class MySearch {
         return response;
     }
 
-    public SearchResponse search(String query) throws Exception {
-        SearchResponse response = client.prepareSearch("documents")
-                .setTypes("document")
-                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                .setQuery(QueryBuilders.termQuery("multi", query))
+    public RefreshResponse reindex() {
+        RefreshResponse response = client.admin()
+                .indices()
+                .prepareRefresh()
                 .execute()
                 .actionGet();
-
         return response;
     }
 
+    public String search(String query) throws Exception {
+        SearchResponse response = client.prepareSearch("documents")
+                .setTypes("document")
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(QueryBuilders.fuzzyLikeThisQuery("url", "title", "path").likeText(query))
+                .execute()
+                .actionGet();
 
+        return this.responseAsString(response);
+    }
+
+
+    public String defaultSearch() throws Exception {
+        SearchResponse response = client.prepareSearch().execute().actionGet();
+        return this.responseAsString(response);
+    }
+
+    private String responseAsString(StatusToXContent o) throws Exception {
+        XContentBuilder builder = jsonBuilder();
+        builder.startObject();
+        o.toXContent(builder, ToXContent.EMPTY_PARAMS);
+        builder.endObject();
+
+        return builder.string();
+    }
 }
 
 

@@ -11,23 +11,20 @@ import search.MySearch;
 public class BasicCrawlController
 {
     private static MySearch search;
+    private String startUrl;
+    private int crawlers;
 
-    public static void startCrawl( String seed, int crawlers  )
+
+    public void doCrawl()
         throws Exception
     {
-
-        String crawlStorageFolder = "/Users/ljl/workspace/javasearch/src/main/resources";
+        String crawlStorageFolder = "/Users/lasjul/workspace/javasearch/src/main/resources";
 
         CrawlConfig config = new CrawlConfig();
-
         config.setCrawlStorageFolder( crawlStorageFolder );
-
         config.setPolitenessDelay( 1000 );
-
         config.setMaxDepthOfCrawling( 2 );
-
         config.setMaxPagesToFetch( 1000 );
-
         config.setResumableCrawling( false );
 
         PageFetcher pageFetcher = new HttpsFetcher( config );
@@ -35,8 +32,9 @@ public class BasicCrawlController
         RobotstxtServer robotstxtServer = new RobotstxtServer( robotstxtConfig, pageFetcher );
         CrawlController controller = new CrawlController( config, pageFetcher, robotstxtServer );
 
-        controller.addSeed( seed );
-        controller.start( BasicCrawler.class, crawlers);
+        controller.addSeed( this.startUrl );
+        System.out.println("Controller, starting");
+        controller.startNonBlocking(BasicCrawler.class, this.crawlers);
     }
 
     public static MySearch getSearch() {
@@ -44,5 +42,15 @@ public class BasicCrawlController
             search = new MySearch();
         }
         return search;
+    }
+
+    public BasicCrawlController setStartUrl(String startUrl) {
+        this.startUrl = startUrl;
+        return this;
+    }
+
+    public BasicCrawlController setCrawlers(int crawlers) {
+        this.crawlers = crawlers;
+        return this;
     }
 }

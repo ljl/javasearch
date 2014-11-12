@@ -37,6 +37,7 @@ public class BasicCrawler
      */
     @Override
     public void visit(Page page) {
+        System.out.println("Visiting page");
         Map<String, String> indexValues = new LinkedHashMap<String, String>();
 
         int docid = page.getWebURL().getDocid();

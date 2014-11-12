@@ -1,0 +1,9 @@
+.jumbotron {
+    position: relative;
+}
+
+#stats {
+    position: absolute;
+    right: 60px;
+    bottom: 90px;
+}
