@@ -72,6 +72,13 @@ public class MySearch {
                 .execute()
                 .actionGet();
 
+        /*SearchResponse response = client.prepareSearch("documents")
+                .setTypes("document")
+                .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
+                .setQuery(QueryBuilders.multiMatchQuery(query, "url", "title", "path"))
+                .execute()
+                .actionGet();*/
+
         return this.responseAsString(response);
     }
 

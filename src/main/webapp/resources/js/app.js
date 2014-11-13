@@ -5,7 +5,8 @@ searchApp.config(['$routeProvider',
         $routeProvider.
             when('/search', {
                 templateUrl: 'resources/views/search.html',
-                controller: 'SearchCtrl'
+                controller: 'SearchCtrl',
+                controllerAs: 'search'
             }).
             when('/admin', {
                 templateUrl: 'resources/views/admin.html',
